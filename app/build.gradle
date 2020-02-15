@@ -150,7 +150,9 @@ dependencies {
     androidTestImplementation testDeps.android.androidRunner
     androidTestImplementation testDeps.android.androidUnitTestingCore
     androidTestImplementation testDeps.android.espressoCore
-    androidTestImplementation testDeps.truth
+    androidTestImplementation (testDeps.truth) {
+        exclude group: "com.google.code.findbugs", module: "jsr305"
+    }
     androidTestImplementation testDeps.mockito
 }
 
