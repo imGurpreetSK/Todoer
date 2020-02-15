@@ -5,7 +5,7 @@ buildscript {
                 "targetSdkVersion"        : 29,
                 "compileSdkVersion"       : 29,
 
-                "ktx"                     : "1.0.1",
+                "ktx"                     : "1.2.0",
                 "coroutines"              : "1.3.0",
                 "coroutinesAndroid"       : "1.3.0",
                 "chuck"                   : "1.1.0",

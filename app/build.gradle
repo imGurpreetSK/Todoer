@@ -64,6 +64,13 @@ android {
     }
 }
 
+sqldelight {
+    TodoerDb {
+        packageName = "com.gurpreetsk.repository"
+        schemaOutputDirectory = file("src/main/sqldelight/schema")
+    }
+}
+
 androidExtensions {
     experimental = true
 }
@@ -83,6 +90,10 @@ configurations {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     ktlint "com.github.shyiko:ktlint:0.31.0"
+
+    implementation project(":base")
+    implementation project(":network")
+    implementation project(":repository")
 
     // Android jetpack
     implementation deps.androidx.ktx

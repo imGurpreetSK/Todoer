@@ -1,0 +1,21 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+apply plugin: "kotlin-kapt"
+
+apply from: "../gradle/dependencies.gradle"
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation deps.moshi.core
+    implementation deps.moshi.adapters
+    kapt deps.moshi.compiler
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+kapt {
+    generateStubs = true
+}
