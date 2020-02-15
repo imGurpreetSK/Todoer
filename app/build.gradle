@@ -1,0 +1,165 @@
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-android-extensions"
+apply plugin: "kotlin-kapt"
+apply plugin: "com.squareup.sqldelight"
+apply plugin: "de.mannodermaus.android-junit5"
+
+apply from: "../gradle/dependencies.gradle"
+
+android {
+    compileSdkVersion versions.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.gurpreetsk.todoer"
+        minSdkVersion versions.minSdkVersion
+        targetSdkVersion versions.targetSdkVersion
+        multiDexEnabled true
+
+        versionCode 1
+        versionName "0.0.1"
+
+        vectorDrawables.useSupportLibrary = true
+
+        buildConfigField "String", "BASE_URL", "\"\"" // TODO(gs) - update base url.
+        buildConfigField "int", "DB_VERSION", "1"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            versionNameSuffix "-debug"
+            applicationIdSuffix ".debug"
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+
+            buildConfigField "String", "DB_NAME", "\"todoer-tb-debug\""
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+
+            buildConfigField "String", "DB_NAME", "\"todoer-db\""
+        }
+    }
+
+    sourceSets {
+        main.java.srcDirs += "src/main/kotlin"
+        debug.java.srcDirs += "src/debug/kotlin"
+        test.java.srcDirs += "src/test/kotlin"
+        androidTest.java.srcDirs += "src/androidTest/kotlin"
+    }
+
+    packagingOptions {
+        exclude "META-INF/LICENSE*"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+kapt {
+    generateStubs = true
+}
+
+repositories {
+    jcenter()
+}
+
+configurations {
+    ktlint
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    ktlint "com.github.shyiko:ktlint:0.31.0"
+
+    // Android jetpack
+    implementation deps.androidx.ktx
+    implementation deps.androidx.preferences
+    implementation deps.androidx.fragments
+
+    // Coroutines
+    implementation deps.coroutines.core
+    implementation deps.coroutines.android
+
+    // Chuck
+    debugImplementation deps.chuck.operational
+    releaseImplementation deps.chuck.noOp
+
+    // Dagger 2
+    implementation deps.dagger.core
+    kapt deps.dagger.compiler
+
+    // Kotlin stdlib
+    implementation deps.kotlinStdLib
+
+    // Leak canary
+    debugImplementation deps.leakCanary
+
+    // Logging
+    implementation deps.logging
+
+    // Moshi
+    implementation deps.moshi.core
+    implementation deps.moshi.adapters
+    kapt deps.moshi.compiler
+
+    // okHttp
+    implementation deps.okhttp.core
+    implementation deps.okhttp.loggingInterceptor
+
+    // Retrofit
+    implementation deps.retrofit.core
+    implementation deps.retrofit.rxjavaAdapter
+    implementation deps.retrofit.moshiAdapter
+
+    // Reactive Extensions
+    implementation deps.rx.bindings
+
+    // Stetho
+    debugImplementation deps.stetho
+
+    // Support
+    implementation deps.support.appCompat
+    implementation deps.support.material
+    implementation deps.support.vectorDrawable
+    implementation deps.support.constraintLayout
+
+    // Sqldelight
+    implementation deps.sqldelight
+
+    /* -----  Testing  ----- */
+
+    testImplementation testDeps.unit.UnitTestingCore
+    testImplementation testDeps.unit.parameterized
+    testRuntimeOnly testDeps.unit.engine
+    testImplementation testDeps.truth
+    testImplementation testDeps.mockito
+
+    androidTestImplementation testDeps.android.androidRunner
+    androidTestImplementation testDeps.android.androidUnitTestingCore
+    androidTestImplementation testDeps.android.espressoCore
+    androidTestImplementation testDeps.truth
+    androidTestImplementation testDeps.mockito
+}
+
+android {
+    sourceSets {
+        debug {
+            manifest.srcFile "src/debug/AndroidManifest.xml"
+        }
+    }
+}
+
+apply from: "../gradle/ktlint.gradle"
