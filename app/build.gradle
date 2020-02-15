@@ -146,6 +146,9 @@ dependencies {
     testRuntimeOnly testDeps.unit.engine
     testImplementation testDeps.truth
     testImplementation testDeps.mockito
+    // Back-portability
+    testImplementation "junit:junit:4.12"
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.4.0"
 
     androidTestImplementation testDeps.android.androidRunner
     androidTestImplementation testDeps.android.androidUnitTestingCore
